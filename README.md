@@ -5,7 +5,11 @@ This repository contains an independent data-cleaning and analysis for an invest
 This project serves as a self-contained portfolio piece demonstrating advanced programming, data manipulation, censoring configuration, and regression matrix interpretation. 
 
 ## Dataset Characteristics and Summary
-- Source: `sashelp.heart`: Framingham Heart Study [Website](https://www.framinghamheartstudy.org)
+- Source: `sashelp.heart`: Framingham Heart Study [Website](https://www.framinghamheartstudy.org).
+- Type: Longitudinal observational study with continued admittance.
+- Samle Size (N = 5049): Incomplete observations were omitted for a complete-case analysis. 
+- Event: Mortality (`Status = 'Dead'`).
+- Time-scale: Measured continuous years elapsed since enrollment. 
 
 ## Methodology
 
