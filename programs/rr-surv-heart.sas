@@ -52,9 +52,59 @@ data ws.heart_clean;
 		Sex = "Standad Binary Indicator for Sex";
 run;
 
+** Creating a cumulative distribution plot for assumption checking  ;
+data ws.cumulativesTable;
+	set ws.heart_clean end=LastObs;
+	
+	array EventCumul {&maxtime} (&maxtime*0);
+	array NonEventCumul {&maxtime} (&maxtime*0);
+	
+	** Separate the smoker totals and the non-smoker totals to compare groups ; 
+	do i=1 to TotalYears;
+		if Smoking_Ind=1 then EventCumul{i} = EventCumul{i}+1;
+		else NonEventCumul{i} = NonEventCumul{i}+1;
+	end;
+	
+	** Reformat the entire table to be suitable for plotting  ;
+	if LastObs then do;
+		TempCol1 = EventCumul{1};
+		TempCol2 = NonEventCumul{1};
+		do i=1 to &maxtime;
+			EventCumul{i} = TempCol1-EventCumul{i};
+			NonEventCumul{i} = TempCol2-NonEventCumul{i};
+		end;
+		do i=1 to &maxtime;
+			Time = i;
+			CumulSmoker = EventCumul{i};
+			CumulNonSmoker = NonEventCumul{i};
+			output;
+		end;
+	end;
+	
+	keep Time CumulSmoker CumulNonSmoker;
+	label Time="Time" CumulSmoker="Total Smoker Deaths" CumulNonSmoker="Total Non-Smoker Deaths";
+run;
+
 ODS pdf file="&cwd./sas-compare-adjusted-risks-cox/outputs/report-rr-surv-heart.pdf";
+** Proportional hazards assumption-checking graph   ;
+proc sgplot data=ws.cumulativesTable;
+	title "Cumulative Deaths Over Time";
+	series x=Time y=CumulSmoker /
+		legendlabel="Smoker Deaths" name="smokers";
+	series x=Time y=CumulNonSmoker /
+		legendlabel="Non-Smoker Deaths" name="nonsmokers";
+	keylegend "smokers" "nonsmokers" / 
+		down=2
+		location=INSIDE position=BOTTOMRIGHT;
+	xaxis label="Time (Years)";
+	yaxis label="Total Deaths";
+run;
+
+** Regression in the output  ;
 proc phreg data=ws.heart_clean;
+	title "Proportional Hazards Regression (Cox Method) Results";
 	class Sex(ref='FEMALE') BP_Status(ref='NORMAL');
 	model TotalYears*Event(0) = Smoking_Ind Cholesterol Sex BP_Status / ties=efron rl;
 run;
+title;
 ODS pdf close;
