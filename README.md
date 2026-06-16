@@ -39,7 +39,7 @@ The model successfully converged. The results for controlling sex, cholesterol, 
 | **BP_Status (OPTIMAL)** | 1 | **0.445** | [0.220, 0.899] | **0.0240** |
 
 ### Key Takeaways:
-* **Tobacco Impact:** Smoking independently increases the 10-year hazard of cardiovascular mortality by **44.7%** ($p = 0.0116$).
+* **Smoking Risks:** Smoking independently increases the 10-year hazard of cardiovascular mortality by **44.7%** ($p = 0.0116$).
 * **Hypertension Risk:** High blood pressure represents the most severe risk multiplier, increasing mortality hazard by **134.9%** ($HR = 2.349$) relative to normal blood pressure.
 * **Protective Effect:** Optimal blood pressure demonstrates a significant protective effect, yielding a **55.5% reduction** in mortality hazard ($HR = 0.445$) compared to the baseline.
 
@@ -49,7 +49,7 @@ Since SAS is a proprietary software, the user wishing to replicate these results
 ### How-To
 1. Begin by simply downloading the master folder or cloning the repo. Since the dataset is local to most SAS installations, it is not included in the repo. 
 
-2. In the SAS file `rr-surv-heart.sas`, locate and edit the line just underneath the header (line 16). After `%let cwd = ...` alter the entire path to match your directory. Ensure the path is changed to the *master folder* containing the same strucutre as the Github repo. In SAS Studio, you can do this by right-clicking the folder and selecting "Properties", then copying the location. 
+2. In the SAS file `rr-surv-heart.sas`, locate and edit the line just underneath the header (line 16). After `%let cwd = ...` alter the entire path to match your directory. Ensure the path is changed to the *master folder* containing the same strucutre as the GitHub repo. In SAS Studio, you can do this by right-clicking the folder and selecting "Properties", then copying the location. 
 
 3. If the local directory is set up the same way (folders called `output`, `programs`, and `workspace`), the program should execute correctly. While you can choose to run the program step-by-step, it is situated to be run one-shot correctly. 
 
